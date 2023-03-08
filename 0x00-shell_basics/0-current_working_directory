@@ -1,2 +1,2 @@
 #!/bin/bash
-echo $DIR_PATH
+pwd p
