@@ -1,2 +1,2 @@
-0	string  SCHOOL School data files always contain the string SCHOOL at offset 0
-!:mime text/school
+0	string SCHOOL School data
+!:mime School
