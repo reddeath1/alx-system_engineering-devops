@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -lam
+ls -lam | sed -E 's/(\s+\S+)$/\1\//'
