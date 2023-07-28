@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The invisible infinity looop
+# The invisible infinity loop
 trap 'echo "I am invincible!!!"' SIGTERM
 i=0
 while [ $i ]; do
