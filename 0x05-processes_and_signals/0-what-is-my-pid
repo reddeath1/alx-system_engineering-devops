@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# Display the bash pid
-echo $BASHPID
