@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-#Prints the content directory in a list format after character '-'
-for x in *; do
-	echo "$x" | cut -f2 -d'-'
-done
