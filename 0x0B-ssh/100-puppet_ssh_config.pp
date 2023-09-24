@@ -1,9 +1,15 @@
-# Puppet to set changes in a server
-file_line { 'disable password login':
-  path => '/etc/ssh/ssh_config',
-  line => 'PasswordAuthentication no',
+# Puppet manifest to configure SSH client
+
+# Disable password authentication
+file_line { 'Turn off passwd auth':
+  path    => '/etc/ssh/sshd_config',
+  line    => 'PasswordAuthentication no',
+  match   => '^#?PasswordAuthentication',
 }
-file_line { 'add path to find the keys':
-  path => '/etc/ssh/ssh_config',
-  line => 'IdentityFile ~/.ssh/school',
+
+# Specify the identity file (private key)
+file_line { 'Declare identity file':
+  path    => '/etc/ssh/ssh_config',
+  line    => 'IdentityFile ~/.ssh/school',
+  match   => '^#?IdentityFile',
 }
