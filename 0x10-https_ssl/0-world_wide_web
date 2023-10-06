@@ -1,36 +1,20 @@
-#!/bin/bash
-# Bash script to display information about subdomains
+#!/usr/bin/env bash
+# Bash script displays DNS records: record type, IP, subdomains
 
-get_record_type() {
-    dig +short -t "$1" "$2" | awk 'NR==1 { print $1 }'
+print_rec ()
+{
+    printf "The subdomain %s is a " "$2"
+    dig "$2.$1" | grep -A1 'ANSWER SECTION:' | awk -F' ' '{ printf $4 }'
+    printf " record and points to "
+    dig "$2.$1" | grep -A1 'ANSWER SECTION:' | awk -F' ' '{ printf $5 }'
+    echo ""
 }
 
-get_destination() {
-    dig +short "$1" | awk 'NR==1 { print $1 }'
-}
-
-audit_subdomain() {
-    local subdomain="$1"
-    local domain="$2"
-    
-    record_type=$(get_record_type A "${subdomain}.${domain}")
-    destination=$(get_destination "${subdomain}.${domain}")
-
-    if [ -n "$record_type" ] && [ -n "$destination" ]; then
-        echo "The subdomain ${subdomain} is a ${record_type} record and points to ${destination}"
-    fi
-}
-
-domain="$1"
-subdomain="$2"
-
-if [ -z "$subdomain" ]; then
-    subdomains=("www" "lb-01" "web-01" "web-02")
+if [ -z "$2" ]; then
+   for subs in "www" "lb-01" "web-01" "web-02"
+   do
+       print_rec "$1" "$subs"
+   done
 else
-    subdomains=("$subdomain")
+    print_rec "$1" "$2"
 fi
-
-for sub in "${subdomains[@]}"; do
-    audit_subdomain "$sub" "$domain"
-done
-
