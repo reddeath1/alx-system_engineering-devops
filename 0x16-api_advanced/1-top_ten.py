@@ -2,8 +2,10 @@
 """
 @author: Frank Galos
 """
-from json import loads
-from requests import get
+import json
+import requests
+import sys
+
 
 def top_ten(subreddit):
     """Read reddit API and return top 10 hotspots """
