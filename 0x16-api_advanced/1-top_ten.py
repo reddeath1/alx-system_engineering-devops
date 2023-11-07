@@ -5,23 +5,20 @@
 from json import loads
 from requests import get
 
-
 def top_ten(subreddit):
-    """queries the Reddit API and prints the titles of the first 10 hot posts
-    listed for a given subreddit.
-    """
+    """Read reddit API and return top 10 hotspots """
+    username = 'ledbag123'
+    password = 'Reddit72'
+    user_pass_dict = {'user': username, 'passwd': password, 'api_type': 'json'}
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) \
+            Gecko/20100101 Firefox/42.0'}
     url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
-    headers = {
-        'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) \ 
-	 Gecko/20100101 Firefox/42.0'
-    }
-    response = get(url, headers=headers, allow_redirects=False)
-    reddits = response.json()
-
-    try:
-        children = reddits.get('data').get('children')
-        for i in range(10):
-            print(children[i].get('data').get('title'))
-    except:
-        print('None')
+    client = requests.session()
+    client.headers = headers
+    r = client.get(url, allow_redirects=False)
+    if r.status_code == 200:
+        list_titles = r.json()['data']['children']
+        for a in list_titles[:10]:
+            print(a['data']['title'])
+    else:
+        return(print("None"))

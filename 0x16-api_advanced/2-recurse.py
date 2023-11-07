@@ -3,29 +3,29 @@
 """
 @author: Frank Galos
 """
-from json import loads
-from requests import get
+import json
+import requests
+import sys
 
 
-def recurse(subreddit, hot_list=[]):
-    """recursive function that queries the Reddit API and returns a list
-    containing the titles of all hot articles for a given subreddit. If no
-    results are found for the given subreddit, the function return None.
-    """
+def recurse(subreddit, host_list=[], after="null"):
+    """Read reddit API and return top 10 hotspots """
+    username = 'ledbag123'
+    password = 'Reddit72'
+    user_pass_dict = {'user': username, 'passwd': password, 'api_type': 'json'}
+    headers = {'user-agent': '/u/ledbag123 API Python for Holberton School'}
+    payload = {"limit": "100", "after": after}
     url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
-    headers = {
-        'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) \
-	 Gecko/20100101 Firefox/42.0'
-    }
-    response = get(url, headers=headers, allow_redirects=False)
-    reddits = response.json()
-
-    try:
-        children = reddits.get('data').get('children')
-        for title in children:
-            hot_list.append(title.get('data').get('title'))
-        return hot_list
-    except:
-        print(None)
-        return 0
+    client = requests.session()
+    client.headers = headers
+    r = client.get(url, allow_redirects=False, params=payload)
+    if r.status_code == 200:
+        list_titles = r.json()['data']['children']
+        after = r.json()['data']['after']
+        if after is not None:
+            host_list.append(list_titles[len(host_list)]['data']['title'])
+            recurse(subreddit, host_list, after)
+        else:
+            return(host_list)
+    else:
+        return(None)
