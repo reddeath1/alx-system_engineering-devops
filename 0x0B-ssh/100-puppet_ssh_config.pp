@@ -8,7 +8,7 @@ file_line { 'Turn off passwd auth':
 
 # Specify the identity file (private key)
 file_line { 'Declare identity file':
-  path    => '/etc/ssh/ssh_config',
+  path    => '~/.ssh',
   line    => 'IdentityFile ~/.ssh/id_rsa',
   match   => '^#?IdentityFile',
 }
